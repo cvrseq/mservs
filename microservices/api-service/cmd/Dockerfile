@@ -1,6 +1,6 @@
-FROM golang:1.23.1
+FROM golang:1.24.2
 
-WORKDIR /microservices
+WORKDIR /app
 
 COPY go.mod go.sum ./
 
@@ -10,6 +10,6 @@ COPY . .
 
 RUN go build -o /go-app ./api-service/cmd
 
-EXPOSE 8080
+EXPOSE 8000
 
 CMD ["/go-app"]

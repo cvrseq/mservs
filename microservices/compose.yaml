@@ -1,0 +1,16 @@
+include:
+  - infra.yaml
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./api-service/cmd/Dockerfile
+    ports:
+      - '8000:8000'
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
