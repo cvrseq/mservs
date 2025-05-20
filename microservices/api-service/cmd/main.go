@@ -1,24 +1,24 @@
 package main
 
 import (
+	"fmt"
+	"log"
 	"net/http"
+	"services/api-service/internal/handler"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gorilla/mux"
 )
 
 func main() {
-	r := gin.Default()
-  
-	r.GET("/someJSON", func(c *gin.Context) {
-	  data := map[string]interface{}{
-		"lang": "GO语言",
-		"tag":  "<br>",
-	  }
-  
-	  
-	  c.AsciiJSON(http.StatusOK, data)
-	})
-  
+	router := mux.NewRouter()
+
+	handler.Init()
+
+	router.HandleFunc("/employees", handler.GetEmployees).Methods("GET")
+	router.HandleFunc("/employee/{id}", handler.GetEmployee).Methods("GET")
+	router.HandleFunc("/employees", handler.AddEmployee).Methods("POST")
+	router.HandleFunc("/employees/{id}", handler.UpdateEmployee).Methods("PUT")
 	
-	r.Run(":8000")
-  }
+	fmt.Println("Сервер запущен на порту 8000")
+	log.Fatal(http.ListenAndServe(":8000", router))
+}
